@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: 14
+        distribution: jdk
 
     - name: Build with Maven
       run: mvn package
