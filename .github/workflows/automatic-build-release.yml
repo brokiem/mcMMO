@@ -5,45 +5,41 @@ on:
     branches:
       - master
 
+env:
+  GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
+  GITHUB_SHA: ${{ env.GITHUB_SHA }}
+  release_id: ${{ env.release_id }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3.3.0
+    - name: Checkout Code
+      uses: actions/checkout@v2
 
-    - name: Set up Java
-      uses: actions/setup-java@v3.9.0
+    - name: Set up Java Environment
+      uses: actions/setup-java@v1
       with:
-        java-version: 17
-        distribution: temurin
+        java-version: 11
 
-    - name: Build with Maven
-      run: mvn package
+    - name: Build and Test
+      run: mvn clean install
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3.1.2
+    - name: Deploy to GitHub Releases
+      uses: actions/upload-artifact@v2
       with:
-        name: artifact
+        name: ${{ env.GITHUB_REPOSITORY }}-v${{ env.GITHUB_SHA }}
         path: target/*.jar
-        
-    - name: Create Release
+
+    - name: Push Tag
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.SECRET_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ env.VERSION }}
-        release_name: Release ${{ env.VERSION }}
+        tag_name: v${{ env.GITHUB_SHA }}
+        release_name: Release ${{ env.GITHUB_SHA }}
         draft: false
         prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.SECRET_KEY }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: target/*.jar
-        asset_name: artifact-${{ env.VERSION }}.jar
-        asset_content_type: application/java-archive
+        upload_url: https://uploads.github.com/repos/${{ env.GITHUB_REPOSITORY }}/releases/${{ env.release_id }}/assets{?name,label}
+        artifact_paths: target/*.jar
