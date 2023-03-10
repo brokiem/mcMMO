@@ -1,0 +1,39 @@
+name: Build and Release [Beta]
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Java Environment
+      uses: actions/setup-java@v1
+      with:
+        java-version: 19
+
+    - name: Build and Test
+      run: mvn clean package install
+
+    - name: Deploy to GitHub Releases
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.GITHUB_REPOSITORY }}-v${{ env.GITHUB_SHA }}
+        path: target/*.jar
+
+    - name: Publish Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: target/*.jar
+        tag_name: v${{ env.GITHUB_SHA }}
+        body: 'Release'
+        name: "${{ env.GITHUB_SHA:0:7 }}"
+        draft: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
