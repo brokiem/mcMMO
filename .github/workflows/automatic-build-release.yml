@@ -19,7 +19,7 @@ jobs:
         java-version: 19
 
     - name: Build and Test
-      run: mvn clean install
+      run: mvn clean package install
 
     - name: Deploy to GitHub Releases
       uses: actions/upload-artifact@v2
