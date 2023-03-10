@@ -26,14 +26,18 @@ jobs:
       with:
         name: ${{ env.GITHUB_REPOSITORY }}-v${{ env.GITHUB_SHA }}
         path: target/*.jar
-
+    
+    - name: Set outputs
+      id: short_sha
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    
     - name: Publish Release
       uses: softprops/action-gh-release@v1
       with:
         files: target/*.jar
-        tag_name: v${{ env.GITHUB_SHA }}
+        tag_name: v${{ steps.short_sha.outputs.sha_short }}
         body: 'Release'
-        name: ${{ env.GITHUB_SHA.slice(0, 7) }}
+        name: mcMMO Automation Compile ${{ env.GITHUB_SHA }}
         draft: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
