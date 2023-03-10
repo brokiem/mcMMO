@@ -33,8 +33,7 @@ jobs:
         files: target/*.jar
         tag_name: v${{ env.GITHUB_SHA }}
         body: 'Release'
-        name: "${{ env.GITHUB_SHA.substr(0, 7) }}"
+        name: "${{ env.GITHUB_SHA.slice(0, 7) }}"
         draft: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
