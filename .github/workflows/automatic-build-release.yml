@@ -27,7 +27,7 @@ jobs:
         name: ${{ env.GITHUB_REPOSITORY }}-v${{ env.GITHUB_SHA }}
         path: target/*.jar
     - name: LS
-      run: ls
+      run: ls target
     - name: Push Tag
       uses: actions/create-release@v1
       env:
