@@ -1,9 +1,12 @@
 name: Build and Release [Beta]
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - master
+    paths:
+    - 'src/**'
+    - 'pom.xml'
+    - '.github/workflows/automation-release.yml'
 
 permissions:
   contents: write
