@@ -38,6 +38,7 @@ jobs:
         body: 'Release'
         name: mcMMO Automation Compile ${{ env.GITHUB_SHA }}
         draft: false
+        tag_name: ${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: MediumCraft/mcMMO
