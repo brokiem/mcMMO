@@ -41,7 +41,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: target/*.jar
-        body: 'Release'
+        body: |
+          Commit ${{ steps.short_sha.outputs.sha_short }}
+          This release is automatically compiled by GitHub Actions
         name: mcMMO Automation Compile ${{ steps.short_sha.outputs.sha_short }}
         draft: false
         tag_name: commit-${{ steps.short_sha.outputs.sha_short }}
