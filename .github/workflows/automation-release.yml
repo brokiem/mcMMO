@@ -26,16 +26,16 @@ jobs:
 
     - name: Build and Test
       run: mvn clean package install
-
-    - name: Deploy to GitHub Releases
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ env.GITHUB_REPOSITORY }}-v${{ env.GITHUB_SHA }}
-        path: target/*.jar
     
     - name: Set outputs
       id: short_sha
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    
+    - name: Deploy to GitHub Releases
+      uses: actions/upload-artifact@v2
+      with:
+        name: mcMMO-${{ steps.short_sha.outputs.sha_short }}
+        path: target/*.jar
     
     - name: Publish Release
       uses: softprops/action-gh-release@v1
