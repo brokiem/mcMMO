@@ -35,7 +35,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: target/*.jar
-        tag_name: v${{ steps.short_sha.outputs.sha_short }}
         body: 'Release'
         name: mcMMO Automation Compile ${{ env.GITHUB_SHA }}
         draft: false
