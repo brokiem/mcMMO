@@ -1,6 +1,8 @@
 # mcMMO
 ## The #1 RPG Mod for Minecraft
 
+[![Build](https://github.com/MediumCraft/mcMMO/actions/workflows/automation-release.yml/badge.svg)](https://github.com/MediumCraft/mcMMO/actions/workflows/automation-release.yml)
+
 ## Website
 I'm working on a brand new website for mcMMO
 
