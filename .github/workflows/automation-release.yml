@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
   
     - name: Cache Maven Repository
-      uses: actions/cache@v3
+      uses: actions/cache/restore@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -35,6 +35,14 @@ jobs:
 
     - name: Build and Test
       run: mvn clean package install
+      
+    - name: Cache Maven Repository
+      uses: actions/cache/save@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     
     - name: Set outputs
       id: short_sha
