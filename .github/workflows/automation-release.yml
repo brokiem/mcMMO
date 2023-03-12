@@ -18,14 +18,20 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
-
+  
+    - name: Cache Maven Repository
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    
     - name: Set up Java Environment
       uses: actions/setup-java@v3
       with:
         java-version: 19
         distribution: 'temurin'
-        # Testing cache
-        cache: 'maven'
 
     - name: Build and Test
       run: mvn clean package install
