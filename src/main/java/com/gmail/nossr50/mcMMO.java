@@ -163,8 +163,6 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        getLogger.info("mcMMO compiled by LeeHansHinLun");
-        getLogger.info("https://github.com/MediumCraft/mcMMO/");
         try {
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
@@ -208,7 +206,10 @@ public class mcMMO extends JavaPlugin {
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
             }
-
+            
+            getLogger().info("mcMMO compiled by LeeHansHinLun");
+            getLogger().info("https://github.com/MediumCraft/mcMMO/");
+            
             if(projectKorraEnabled) {
                 getLogger().info("ProjectKorra was detected, this can cause some issues with weakness potions and combat skills for mcMMO");
             }
