@@ -163,8 +163,8 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        getLogger.info("mcMMO compiled by LeeHansHinLun")
-        getLogger.info("https://github.com/MediumCraft/mcMMO/")
+        getLogger.info("mcMMO compiled by LeeHansHinLun");
+        getLogger.info("https://github.com/MediumCraft/mcMMO/");
         try {
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
