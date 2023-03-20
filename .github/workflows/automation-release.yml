@@ -58,6 +58,6 @@ jobs:
         tag_name: commit-${{ steps.short_sha.outputs.sha_short }}
         generate_release_notes: true
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE_KEY }}
         GITHUB_REPOSITORY: MediumCraft/mcMMO
 
