@@ -1,4 +1,5 @@
 # mcMMO
+[![Build and Release [Beta]](https://github.com/MediumCraft/mcMMO/actions/workflows/automation-release.yml/badge.svg)](https://github.com/MediumCraft/mcMMO/actions/workflows/automation-release.yml)
 ## The #1 RPG Mod for Minecraft
 
 
