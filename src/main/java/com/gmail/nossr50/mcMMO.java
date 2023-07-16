@@ -163,12 +163,6 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            // Compile notes
-            getLogger().info("This mcMMO version is compiled with auto-compile!");
-            getLogger().info("If you didn't download this from the releases section of https://github.com/MediumCraft/mcMMO it might not be a good idea to continue.");
-            getLogger().info("They are also getting personal gain for reuploading this and putting it through a link-shortener that contains ads.");
-            getLogger().info("Compiled by MediumBerry5575");
-            
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
             skillTools = new SkillTools(this); //Load after general config
