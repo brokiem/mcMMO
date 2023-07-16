@@ -20,6 +20,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.metadata.MetadataService;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.placeholders.PapiExpansion;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.commands.NotifySquelchReminderTask;
@@ -163,6 +164,9 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            //Filter out any debug messages (if debug/verbose logging is not enabled)
+            getLogger().setFilter(new LogFilter(this));
+
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
             skillTools = new SkillTools(this); //Load after general config
@@ -179,9 +183,6 @@ public class mcMMO extends JavaPlugin {
             //metadata service
             metadataService = new MetadataService(this);
 
-            //Filter out any debug messages (if debug/verbose logging is not enabled)
-            getLogger().setFilter(new LogFilter(this));
-
             MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
 
             PluginManager pluginManager = getServer().getPluginManager();
@@ -189,7 +190,6 @@ public class mcMMO extends JavaPlugin {
             projectKorraEnabled = pluginManager.getPlugin("ProjectKorra") != null;
 
             upgradeManager = new UpgradeManager();
-
 
             modManager = new ModManager();
 
@@ -255,7 +255,7 @@ public class mcMMO extends JavaPlugin {
                     new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
-                debug("Version " + getDescription().getVersion() + " is enabled!");
+                LogUtils.debug(mcMMO.p.getLogger(), "Version " + getDescription().getVersion() + " is enabled!");
 
                 scheduleTasks();
                 CommandRegistrationManager.registerCommands();
@@ -282,9 +282,7 @@ public class mcMMO extends JavaPlugin {
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
             }
-        }
-
-        catch (Throwable t) {
+        } catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
 
             if (!(t instanceof ExceptionInInitializerError)) {
@@ -320,6 +318,10 @@ public class mcMMO extends JavaPlugin {
 
         transientEntityTracker = new TransientEntityTracker();
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PapiExpansion().register();
+        }
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -388,13 +390,13 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
-        debug("Canceling all tasks...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Canceling all tasks...");
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
-        debug("Unregister all events...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
         databaseManager.onDisable();
-        debug("Was disabled."); // How informative!
+        LogUtils.debug(mcMMO.p.getLogger(), "Was disabled."); // How informative!
     }
 
     public static String getMainDirectory() {
@@ -427,10 +429,6 @@ public class mcMMO extends JavaPlugin {
 
     public void toggleXpEventEnabled() {
         xpEventEnabled = !xpEventEnabled;
-    }
-
-    public void debug(String message) {
-        getLogger().info("[Debug] " + message);
     }
 
     public static FormulaManager getFormulaManager() {
@@ -613,7 +611,7 @@ public class mcMMO extends JavaPlugin {
 
         if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
-            getLogger().info("Enabling Acrobatics Skills");
+            LogUtils.debug(mcMMO.p.getLogger(), "Enabling Acrobatics Skills");
 
             //TODO: Should do this differently
             Roll roll = new Roll();
