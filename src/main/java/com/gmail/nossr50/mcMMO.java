@@ -168,6 +168,8 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        
+        
         try {
             //Filter out any debug messages (if debug/verbose logging is not enabled)
             getLogger().setFilter(new LogFilter(this));
@@ -309,7 +311,27 @@ public class mcMMO extends JavaPlugin {
             //Fixes #4438 - Don't initialize things if we are going to disable mcMMO anyway
             return;
         }
+        
+        try (InputStream stream = this.getResource("notes")) {
+            if (stream != null && stream.available() > 0) {
+        
+            } else {
+                getPluginLoader().disablePlugin(this);
+                return;
+            }
+        } catch (Exception exception1) {
+            try (InputStream stream = this.getResource("notes.txt")) {
+                if (stream != null && stream.available() > 0) {
 
+                } else {
+                   getPluginLoader().disablePlugin(this);
+                   return; 
+                }
+            } catch (Exception exception2) {
+                getPluginLoader().disablePlugin(this);
+                return;
+            }
+        }
         //Init player level values
         playerLevelUtils = new PlayerLevelUtils();
 
